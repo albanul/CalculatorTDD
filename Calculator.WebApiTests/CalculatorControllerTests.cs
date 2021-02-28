@@ -11,6 +11,8 @@ namespace CalculatorPOC
     {
         private HttpClient _client;
 
+        public static string AddEndpoint(string a, string b) => $"/add?a={a}&b={b}";
+
         [SetUp]
         public void SetUp()
         {
@@ -22,7 +24,7 @@ namespace CalculatorPOC
         public async Task GetAdd_ShouldReturnOk()
         {
             // act
-            HttpResponseMessage response = await _client.GetAsync("/add?a=1&b=1");
+            HttpResponseMessage response = await _client.GetAsync(AddEndpoint("1", "1"));
 
             // assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -34,7 +36,7 @@ namespace CalculatorPOC
         public async Task GetAdd_ShouldReturnCorrectValue(int a, int b, int expected)
         {
             // act
-            HttpResponseMessage response = await _client.GetAsync($"/add?a={a}&b={b}");
+            HttpResponseMessage response = await _client.GetAsync(AddEndpoint(a.ToString(), b.ToString()));
 
             // assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -51,7 +53,7 @@ namespace CalculatorPOC
         public async Task GetAdd_ShouldReturnBadRequest_WhenParameterAIsNotAnInteger_WithCorrectErrorMessage()
         {
             // act
-            HttpResponseMessage response = await _client.GetAsync("/add?a=abc&b=1");
+            HttpResponseMessage response = await _client.GetAsync(AddEndpoint("abc", "1"));
 
             // assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
