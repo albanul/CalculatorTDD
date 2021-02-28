@@ -46,5 +46,21 @@ namespace CalculatorPOC
             int actual = int.Parse(content);
             Assert.That(actual, Is.EqualTo(expected));
         }
+
+        [Test]
+        public async Task GetAdd_ShouldReturnBadRequest_WhenParameterAIsNotAnInteger_WithCorrectErrorMessage()
+        {
+            // act
+            HttpResponseMessage response = await _client.GetAsync("/add?a=abc&=1");
+
+            // assert
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+
+            string actual = await response.Content.ReadAsStringAsync();
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual, Is.Not.Empty);
+
+            Assert.That(actual, Is.EqualTo("'a' has invalid value 'abc'"));
+        }
     }
 }
