@@ -11,7 +11,7 @@ namespace Calculator.WebApi
         {
             if (!int.TryParse(a, out int intA))
             {
-                return BadRequest($"'a' has invalid value 'abc'");
+                return BadRequest($"'a' has invalid value '{a}'");
             }
 
             return Ok(intA + b);
