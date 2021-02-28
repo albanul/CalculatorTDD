@@ -51,7 +51,7 @@ namespace CalculatorPOC
         public async Task GetAdd_ShouldReturnBadRequest_WhenParameterAIsNotAnInteger_WithCorrectErrorMessage()
         {
             // act
-            HttpResponseMessage response = await _client.GetAsync("/add?a=abc&=1");
+            HttpResponseMessage response = await _client.GetAsync("/add?a=abc&b=1");
 
             // assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
