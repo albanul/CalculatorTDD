@@ -50,6 +50,7 @@ namespace CalculatorPOC
         }
 
         [TestCase("abc")]
+        [TestCase("foo")]
         public async Task GetAdd_ShouldReturnBadRequest_WhenParameterAIsNotAnInteger_WithCorrectErrorMessage(
             string value)
         {
