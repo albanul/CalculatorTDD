@@ -10,4 +10,8 @@
       <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
       <PackageReference Include="NUnit" Version="3.13.1" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Calculator.WebApi\Calculator.WebApi.csproj" />
+    </ItemGroup>
 </Project>
