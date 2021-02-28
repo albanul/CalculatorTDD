@@ -23,15 +23,15 @@ namespace CalculatorPOC
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
-        [Test]
-        public async Task GetAdd_ShouldReturnCorrectValue()
+        [TestCase(1, 1, 2)]
+        public async Task GetAdd_ShouldReturnCorrectValue(int a, int b, int expected)
         {
             // assert
             var factory = new WebApplicationFactory<Startup>();
             HttpClient client = factory.CreateClient();
 
             // act
-            HttpResponseMessage response = await client.GetAsync("/add?a=1&b=1");
+            HttpResponseMessage response = await client.GetAsync($"/add?a={a}&b={b}");
 
             // assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -41,7 +41,7 @@ namespace CalculatorPOC
             Assert.That(content, Is.Not.Empty);
 
             int actual = int.Parse(content);
-            Assert.That(actual, Is.EqualTo(2));
+            Assert.That(actual, Is.EqualTo(expected));
         }
     }
 }
