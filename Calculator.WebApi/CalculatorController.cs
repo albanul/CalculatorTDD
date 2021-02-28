@@ -9,7 +9,7 @@ namespace Calculator.WebApi
         [HttpGet("add")]
         public IActionResult Add()
         {
-            return Ok();
+            return Ok(2);
         }
     }
 }
