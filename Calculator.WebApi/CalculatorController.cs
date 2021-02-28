@@ -7,14 +7,19 @@ namespace Calculator.WebApi
     public class CalculatorController : ControllerBase
     {
         [HttpGet("add")]
-        public IActionResult Add(string a, int b)
+        public IActionResult Add(string a, string b)
         {
             if (!int.TryParse(a, out int intA))
             {
                 return BadRequest($"'a' has invalid value '{a}'");
             }
 
-            return Ok(intA + b);
+            if (!int.TryParse(b, out int intB))
+            {
+                return BadRequest($"'b' has invalid value 'abc'");
+            }
+
+            return Ok(intA + intB);
         }
     }
 }
