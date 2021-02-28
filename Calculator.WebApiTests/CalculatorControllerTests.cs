@@ -25,6 +25,7 @@ namespace CalculatorPOC
 
         [TestCase(1, 1, 2)]
         [TestCase(1, 2, 3)]
+        [TestCase(1, -2, -1)]
         public async Task GetAdd_ShouldReturnCorrectValue(int a, int b, int expected)
         {
             // assert
