@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>CalculatorPOC</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.3" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+      <PackageReference Include="NUnit" Version="3.13.1" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,15 @@
+﻿Feature: Addition
+As a user
+I want to have an Add endpoint
+So that I could add two numbers
+
+Scenario 1: Happy flow
+When user sends a get request to /add endpoint
+And query parameters 'a=x' and 'b=y' where x and y are both integers
+Then user should receive a response 200 with x+y as a content
+
+Scenario 2: Edge Case 1
+When user send a get request to /add endpoint
+And query parameters are not an integer values
+Then user should receive a response 400 - Bad Request
+And content should be "'<parameter>' has invalid value '<value>'"
