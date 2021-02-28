@@ -7,9 +7,9 @@ namespace Calculator.WebApi
     public class CalculatorController : ControllerBase
     {
         [HttpGet("add")]
-        public IActionResult Add()
+        public IActionResult Add(int a, int b)
         {
-            return Ok(2);
+            return Ok(a + b);
         }
     }
 }
