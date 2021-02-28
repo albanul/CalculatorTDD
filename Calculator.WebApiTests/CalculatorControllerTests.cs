@@ -49,11 +49,12 @@ namespace CalculatorPOC
             Assert.That(actual, Is.EqualTo(expected));
         }
 
-        [Test]
-        public async Task GetAdd_ShouldReturnBadRequest_WhenParameterAIsNotAnInteger_WithCorrectErrorMessage()
+        [TestCase("abc")]
+        public async Task GetAdd_ShouldReturnBadRequest_WhenParameterAIsNotAnInteger_WithCorrectErrorMessage(
+            string value)
         {
             // act
-            HttpResponseMessage response = await _client.GetAsync(AddEndpoint("abc", "1"));
+            HttpResponseMessage response = await _client.GetAsync(AddEndpoint(value, "1"));
 
             // assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
@@ -62,7 +63,7 @@ namespace CalculatorPOC
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual, Is.Not.Empty);
 
-            Assert.That(actual, Is.EqualTo("'a' has invalid value 'abc'"));
+            Assert.That(actual, Is.EqualTo($"'a' has invalid value '{value}'"));
         }
     }
 }
