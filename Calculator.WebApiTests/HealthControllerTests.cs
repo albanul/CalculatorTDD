@@ -2,15 +2,16 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Calculator.WebApi;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using NUnit.Framework;
+using Xunit;
 
 namespace CalculatorPOC
 {
     public class HealthControllerTests
     {
-        [Test]
-        public async Task Get_ShouldReturnOk()
+        [Fact]
+        public async Task GivenHealthController_WhenHealthActionIsCalled_ThenOkShouldBeReturned()
         {
             // assert
             var factory = new WebApplicationFactory<Startup>();
@@ -20,7 +21,7 @@ namespace CalculatorPOC
             HttpResponseMessage response = await client.GetAsync("/health");
 
             // assert
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }
 }

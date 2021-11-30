@@ -2,89 +2,97 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Calculator.WebApi;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using NUnit.Framework;
+using Xunit;
 
 namespace CalculatorPOC
 {
     public class CalculatorControllerTests
     {
-        private HttpClient _client;
+        private readonly HttpClient _client;
 
-        public static string AddEndpoint(string a, string b) => $"/add?a={a}&b={b}";
+        private static string AddEndpoint(string a, string b) => $"/add?a={a}&b={b}";
 
-        [SetUp]
-        public void SetUp()
+        public CalculatorControllerTests()
         {
             var factory = new WebApplicationFactory<Startup>();
             _client = factory.CreateClient();
         }
 
-        [Test]
-        public async Task GetAdd_ShouldReturnOk()
+        [Fact]
+        public async Task GivenCalculatorController_WhenGetAddIsCalled_ThenShouldReturnOk()
         {
             // act
             HttpResponseMessage response = await _client.GetAsync(AddEndpoint("1", "1"));
 
             // assert
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
-        [TestCase(1, 1, 2)]
-        [TestCase(1, 2, 3)]
-        [TestCase(1, -2, -1)]
-        public async Task GetAdd_ShouldReturnCorrectValue(int a, int b, int expected)
+        [Theory]
+        [InlineData(1, 1, 2)]
+        [InlineData(1, 2, 3)]
+        [InlineData(1, -2, -1)]
+        public async Task GivenCalculatorController_WhenGetAddIsCalled_ThenShouldReturnCorrectValue(
+            int a,
+            int b,
+            int expected)
         {
             // act
             HttpResponseMessage response = await _client.GetAsync(AddEndpoint(a.ToString(), b.ToString()));
 
             // assert
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             string content = await response.Content.ReadAsStringAsync();
-            Assert.That(content, Is.Not.Null);
-            Assert.That(content, Is.Not.Empty);
+            content.Should().NotBeNull();
+            content.Should().NotBeEmpty();
 
             int actual = int.Parse(content);
-            Assert.That(actual, Is.EqualTo(expected));
+            actual.Should().Be(expected);
         }
 
-        [TestCase("abc")]
-        [TestCase("foo")]
-        [TestCase("bar")]
-        public async Task GetAdd_ShouldReturnBadRequest_WhenParameterAIsNotAnInteger_WithCorrectErrorMessage(
-            string value)
+        [Theory]
+        [InlineData("abc")]
+        [InlineData("foo")]
+        [InlineData("bar")]
+        public async Task
+            GivenCalculatorController_WhenGetAddIsCalledAndParameterAIsNotAnInteger_ThenShouldReturnBadRequest(
+                string value)
         {
             // act
             HttpResponseMessage response = await _client.GetAsync(AddEndpoint(value, "1"));
 
             // assert
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
             string actual = await response.Content.ReadAsStringAsync();
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.Not.Empty);
+            actual.Should().NotBeNull();
+            actual.Should().NotBeEmpty();
 
-            Assert.That(actual, Is.EqualTo($"'a' has invalid value '{value}'"));
+            actual.Should().Be($"'a' has invalid value '{value}'");
         }
 
-        [TestCase("abc")]
-        [TestCase("foo")]
-        [TestCase("bar")]
-        public async Task GetAdd_ShouldReturnBadRequest_WhenParameterBIsNotAnInteger_WithCorrectErrorMessage(
-            string value)
+        [Theory]
+        [InlineData("abc")]
+        [InlineData("foo")]
+        [InlineData("bar")]
+        public async Task
+            GivenCalculatorController_WhenGetAddIsCalledAndParameterBIsNotAnInteger_ThenShouldReturnBadRequest(
+                string value)
         {
             // act
             HttpResponseMessage response = await _client.GetAsync(AddEndpoint("1", value));
 
             // assert
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
             string actual = await response.Content.ReadAsStringAsync();
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.Not.Empty);
+            actual.Should().NotBeNull();
+            actual.Should().NotBeEmpty();
 
-            Assert.That(actual, Is.EqualTo($"'b' has invalid value '{value}'"));
+            actual.Should().Be($"'b' has invalid value '{value}'");
         }
     }
 }
